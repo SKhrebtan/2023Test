@@ -1,3 +1,78 @@
+:root {
+  --black-header-color: #111111;
+  --black-body-color: #202024;
+  --violet-color: #4f2ee8;
+  --white-color: #fff;
+  --grey-text-color: #b4afaf;
+  --yellow-color: #eac645;
+  --light-theme-color: #f6f6f6;
+  --grey-categories-color: #e0e0e0;
+  --transition-dur-and-func: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.category-list-item-active {
+  color: blue;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  border: 0;
+  padding: 0;
+  white-space: nowrap;
+  clip-path: inset(100%);
+  clip: rect(0 0 0 0);
+  overflow: hidden;
+}
+
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--black-header-color);
+  font-size: 14px;
+  font-weight: 400;
+  letter-spacing: -0.04em;
+  background-color: #f6f6f6;
+  transition: 250ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Reset styles */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p {
+  margin: 0;
+}
+
+p:last-child {
+  margin-bottom: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+a {
+  color: currentColor;
+  text-decoration: none;
+}
+
+button {
+  cursor: pointer;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}
+
 .home-container {
   margin-left: auto;
   margin-right: auto;
@@ -7,7 +82,7 @@
   min-width: 320px;
 }
 
-.home-main-title {
+.home-main-span {
   color: var(--black-header-color);
   font-family: DM Sans;
   font-size: 32px;
@@ -18,7 +93,7 @@
   margin-bottom: 40px;
 }
 
-.home-main-span {
+.home-main-span-lastword {
   color: var(--violet-color);
 }
 
@@ -64,10 +139,14 @@
   display: none;
 }
 
+.category-gallery .gallery-item:nth-child(n + 1) {
+  display: block;
+}
+
 .gallery-item-thumb {
   margin: 0 auto;
-  width: 335px;
-  height: 485px;
+  width: 100%;
+  height: 100%;
   border-radius: 8px;
   overflow: hidden;
 }
@@ -135,14 +214,16 @@
   .gallery {
     width: 704px;
   }
-
+  .category-gallery {
+    width: 704px;
+  }
   .gallery-item:nth-child(2n) {
     display: block;
   }
 
   .gallery-category {
     display: flex;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     gap: 25px;
   }
 
@@ -174,7 +255,9 @@
   .gallery {
     width: 996px;
   }
-
+  .category-gallery {
+    width: 996px;
+  }
   .gallery-item:nth-child(n + 1) {
     display: block;
   }
