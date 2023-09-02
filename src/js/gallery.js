@@ -9,13 +9,16 @@ const categorySection = document.querySelector('.category-gallery');
 const mainTitle = document.querySelector('.home-main-span')
 const mainTitleLastWtord = document.querySelector('.home-main-span-lastword')
 
+booksSection.addEventListener('click', onSeeMoreClick);
+
 fetchBooks();
 
 async function fetchBooks() {
     mainTitle.textContent = 'BEST SELLERS';
     mainTitleLastWtord.textContent = ' BOOKS';
-  const { data } = await axios.get('/top-books');
+  
   try {
+    const { data } = await axios.get('/top-books');
     const markup = renderList(data);
     booksSection.innerHTML = markup;
   } catch (error) {
@@ -24,6 +27,23 @@ async function fetchBooks() {
     console.log('Something went wrong:', error.message);
   }
 }
+
+async function fetchByCategory(category) {
+  try {
+     const { data } = await axios.get(`/category?category=${category}`);
+    console.log(data)
+    if (data.length === 0) {
+      return Notiflix.Notify.info('Книги закінчились')
+    }
+    const markup = renderOneCategory(data);
+    booksSection.style.display = 'none';
+    categorySection.innerHTML = markup;
+  } catch (error) {
+    Notiflix.Notify.failure('Помилка: ', error.message)
+  }
+   
+}
+
 function renderList(data) {
   return data
     .map(({ list_name, books }) => {
@@ -37,6 +57,8 @@ function renderList(data) {
     })
     .join('');
 }
+
+
 function renderCategories(books) {
   return books
     .map(({ book_image, title, author }) => {
@@ -52,15 +74,19 @@ function renderCategories(books) {
     .join('');
 }
 
-async function fetchByCategory(category) {
-    const { data } = await axios.get(`/category?category=${category}`);
-    console.log(data)
-    const markup = renderOneCategory(data);
-    booksSection.style.display = 'none';
-    categorySection.innerHTML = markup;
+function renderOneCategory(data) {
+    return data.map(({ book_image, title, author }) => {
+      return `<li class="gallery-item">
+        <div class="gallery-item-thumb">
+        <img class="gallery-item-image" loading="lazy" src="${book_image}">
+        </div>
+        <p class="gallery-item-title">${title}</p>
+        <p class="gallery-item-author">${author}</p>
+        </li>
+           `;
+    })
+    .join('');
 }
-
-booksSection.addEventListener('click', onSeeMoreClick);
 
 function onSeeMoreClick(e) {
     if (!e.target.classList.contains('gallery-button')) {
@@ -75,22 +101,8 @@ function onSeeMoreClick(e) {
         category.classList.remove('category-list-item-active')
         if (categoryQuery.toLowerCase() === category.textContent.toLowerCase()) {
             category.classList.add('category-list-item-active')
-            
-        }
+                   }
     }
     fetchByCategory(categoryQuery)
 }
 
-function renderOneCategory(data) {
-    return data.map(({ book_image, title, author }) => {
-      return `<li class="gallery-item">
-        <div class="gallery-item-thumb">
-        <img class="gallery-item-image" loading="lazy" src="${book_image}">
-        </div>
-        <p class="gallery-item-title">${title}</p>
-        <p class="gallery-item-author">${author}</p>
-        </li>
-           `;
-    })
-    .join('');
-}
